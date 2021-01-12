@@ -18,13 +18,19 @@ namespace Bank_Application
             }
         }
 
-        public BankAccount(string name, decimal initialBalance)
+        private readonly decimal _minimumBalance;
+
+        public BankAccount(string name, decimal initialBalance) : this(name, initialBalance, 0) { }
+
+        public BankAccount(string name, decimal initialBalance, decimal minimumBalance)
         {
             Number = accountNumberSeed.ToString();
             accountNumberSeed++;
 
             Owner = name;
-            MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
+            _minimumBalance = minimumBalance;
+            if (initialBalance > 0)
+                MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
         }
 
         private List<Transaction> allTransactions = new List<Transaction>();
@@ -45,12 +51,23 @@ namespace Bank_Application
             {
                 throw new ArgumentOutOfRangeException(nameof(amount), "Amount of withdrawal must be positive");
             }
-            if (Balance - amount < 0)
+            var overdraftTransaction = CheckWithdrawalLimit(Balance - amount < _minimumBalance);
+            var withdrawal = new Transaction(-amount, date, note);
+            allTransactions.Add(withdrawal);
+            if (overdraftTransaction != null)
+                allTransactions.Add(overdraftTransaction);
+        }
+
+        protected virtual Transaction? CheckWithdrawalLimit(bool isOverdrawn)
+        {
+            if (isOverdrawn)
             {
                 throw new InvalidOperationException("Not sufficient funds for this withdrawal");
             }
-            var withdrawal = new Transaction(-amount, date, note);
-            allTransactions.Add(withdrawal);
+            else
+            {
+                return default;
+            }
         }
 
         public string GetAccountHistory()
@@ -67,5 +84,7 @@ namespace Bank_Application
 
             return report.ToString();
         }
+
+        public virtual void PerformMonthEndTransactions() { }
     }
 }

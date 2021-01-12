@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank Application", "Bank Application\Bank Application.csproj", "{859B8455-6E55-4430-B3EF-0DAB05026A4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bank Application", "Bank Application\Bank Application.csproj", "{859B8455-6E55-4430-B3EF-0DAB05026A4F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{27EB24D1-5919-46FD-A356-F3EDC3289837}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
